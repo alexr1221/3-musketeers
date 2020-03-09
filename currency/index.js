@@ -14,15 +14,15 @@ module.exports = async opts => {
 
   const anyBTC = isAnyBTC(from, to);
 
-  if (anyBTC) {
+  if (anyBTC) { // check if query contains Bitcoin
     base = from === CURRENCY_BITCOIN ? to : from;
-    promises.push(axios(BLOCKCHAIN_URL));
+    promises.push(axios(BLOCKCHAIN_URL)); // blockchain API
   }
 
-  promises.unshift(axios(`${RATES_URL}?base=${base}`));
+  promises.unshift(axios(`${RATES_URL}?base=${base}`)); // collect the rates for a specific currency
 
   try {
-    const responses = await Promise.all(promises);
+    const responses = await Promise.all(promises); // wait for response
     const [rates] = responses;
 
     money.base = rates.data.base;
